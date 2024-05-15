@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Onion.Application\Onion.Application.csproj" />
+      <ProjectReference Include="..\Onion.Domain\Onion.Domain.csproj" />
+      <ProjectReference Include="..\Onion.Infrastructure\Onion.Infrastructure.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="IoC\" />
+    </ItemGroup>
+
+</Project>
