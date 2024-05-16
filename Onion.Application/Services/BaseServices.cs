@@ -17,23 +17,24 @@ public class BaseServices<T> : IBaseServices<T>
         return await _baseRepository.GetAllAsync();
     }
 
-    public Task<T> GetById(int id)
+    public async Task<T> GetById(int id)
     {
-        throw new NotImplementedException();
+        return await _baseRepository.GetById(id);
     }
 
-    public Task<T> CreateAsync(T entity)
+    public async Task<T> CreateAsync(T entity)
     {
-        throw new NotImplementedException();
+        return await _baseRepository.CreateAsync(entity);
     }
 
-    public Task<T> UpdateAsync(int id, T entity)
+    public async Task<T> UpdateAsync(int id, T entity)
     {
-        throw new NotImplementedException();
+        return await _baseRepository.UpdateAsync(id, entity);
     }
 
-    public Task RemoveAsync(int id)
+    public async Task RemoveAsync(int id)
     {
-        throw new NotImplementedException();
+        var entity = await _baseRepository.GetById(id);
+        await _baseRepository.RemoveAsync(entity);
     }
 }

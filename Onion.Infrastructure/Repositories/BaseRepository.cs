@@ -1,10 +1,11 @@
 using Microsoft.EntityFrameworkCore;
+using Onion.Domain.Entities;
 using Onion.Domain.Interfaces;
 using Onion.Infrastructure.Context;
 
 namespace Onion.Infrastructure.Repositories;
 
-public class BaseRepository<T> : IBaseRepository<T> where T : class
+public class BaseRepository<T> : IBaseRepository<T> where T : Entity
 {
     private readonly AppDbContext _context;
 
@@ -19,9 +20,9 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
         return await _context.Set<T>().ToListAsync();
     }
 
-    public Task<T> GetById(int id)
+    public async Task<T> GetById(int id)
     {
-        throw new NotImplementedException();
+        return await _context.Set<T>().FirstOrDefaultAsync(e => e.Id == id);
     }
 
     public Task<T> CreateAsync(T entity)

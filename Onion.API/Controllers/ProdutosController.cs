@@ -16,10 +16,23 @@ public class ProdutosController : ControllerBase
         _produtoServices = produtoServices;
     }
 
+    // /produtos
     [HttpGet]
     public async Task<ActionResult<IEnumerable<ProdutoDTO>>> GetAll()
     {
         var produtos = await _produtoServices.GetAllAsync();
         return Ok(produtos);
+    }
+    
+    // /produtos/{id}
+    [HttpGet("{id:int}")]
+    public async Task<ActionResult<ProdutoDTO>> Get(int id)
+    {
+        var produto = await _produtoServices.GetById(id);
+
+        if (produto is null)
+            return NotFound($"Produto com id: {id} não encontrado.");
+
+        return Ok(produto);
     }
 }

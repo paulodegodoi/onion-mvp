@@ -8,10 +8,10 @@ public class ProdutoConfiguration : IEntityTypeConfiguration<Produto>
 {
     public void Configure(EntityTypeBuilder<Produto> builder)
     {
-        builder.HasKey(p => p.ProdutoId);
+        builder.HasKey(p => p.Id);
         builder.Property(p => p.Nome).HasMaxLength(80).IsRequired();
         builder.Property(p => p.Valor).HasPrecision(18, 2).IsRequired();
-
+        
         builder.HasData(
             new Produto(1, "Celular", 1000),
             new Produto(2, "Notebook", 3000),
