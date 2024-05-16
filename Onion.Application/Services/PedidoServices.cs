@@ -1,16 +1,17 @@
 using AutoMapper;
 using Onion.Application.DTOs;
 using Onion.Application.Interfaces;
+using Onion.Domain.Entities;
 using Onion.Domain.Interfaces;
 
 namespace Onion.Application.Services;
 
 public class PedidoServices : IBaseServices<PedidoDTO>
 {
-    private readonly IBaseRepository<PedidoDTO> _pedidoRepository;
+    private readonly IBaseRepository<Pedido> _pedidoRepository;
     private readonly IMapper _mapper;
 
-    public PedidoServices(IBaseRepository<PedidoDTO> pedidoRepository, IMapper mapper)
+    public PedidoServices(IBaseRepository<Pedido> pedidoRepository, IMapper mapper)
     {
         _pedidoRepository = pedidoRepository;
         _mapper = mapper;
@@ -18,8 +19,8 @@ public class PedidoServices : IBaseServices<PedidoDTO>
 
     public async Task<IEnumerable<PedidoDTO>> GetAllAsync()
     {
-        var pedidosEntity = await _pedidoRepository.GetAllAsync();
-        return _mapper.Map<IEnumerable<PedidoDTO>>(pedidosEntity);
+        var pedidos = await _pedidoRepository.GetAllAsync();
+        return _mapper.Map<IEnumerable<PedidoDTO>>(pedidos);
     }
 
     public async Task<PedidoDTO> GetById(int id)
@@ -30,8 +31,16 @@ public class PedidoServices : IBaseServices<PedidoDTO>
 
     public async Task<PedidoDTO> CreateAsync(PedidoDTO entity)
     {
-        var pedidoEntity = await _pedidoRepository.CreateAsync(entity);
-        return _mapper.Map<PedidoDTO>(pedidoEntity);
+        try
+        {
+            var pedidoEntity = _mapper.Map<Pedido>(entity);
+            var pedido = await _pedidoRepository.CreateAsync(pedidoEntity);
+            return _mapper.Map<PedidoDTO>(pedido);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Não foi possível criar o pedido. Erro: {ex.Message}");
+        }
     }
 
     public async Task<PedidoDTO> UpdateAsync(int id, PedidoDTO entity)
@@ -44,7 +53,8 @@ public class PedidoServices : IBaseServices<PedidoDTO>
         if (pedidoEntity is null)
             throw new NullReferenceException($"Pedido não encontrado. Id: {id}.");
         
-        var pedidoUpdatedEntity = await _pedidoRepository.UpdateAsync(pedidoEntity);
+        var pedidoToUpdate = _mapper.Map<Pedido>(entity);
+        var pedidoUpdatedEntity = await _pedidoRepository.UpdateAsync(id, pedidoToUpdate);
         return _mapper.Map<PedidoDTO>(pedidoUpdatedEntity);
     }
 
@@ -53,7 +63,7 @@ public class PedidoServices : IBaseServices<PedidoDTO>
         var pedidoEntity = await _pedidoRepository.GetById(id);
 
         if (pedidoEntity is null)
-            throw new NullReferenceException();
+            throw new NullReferenceException($"Pedido não encontrado. Id: {id}.");
         
         await _pedidoRepository.RemoveAsync(pedidoEntity);
     }
