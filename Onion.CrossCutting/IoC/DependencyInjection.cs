@@ -16,8 +16,20 @@ public static class DependencyInjection
     {
         services.AddDbContext<AppDbContext>();
         services.AddAutoMapper(typeof(DomainToDTOMappingProfile));
+        
+        // base
         services.AddScoped(typeof(IBaseServices<>), typeof(BaseServices<>));
         services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
+        
+        // cliente
+        services.AddScoped(typeof(IClienteServices), typeof(ClienteServices));
+        services.AddScoped(typeof(IClienteRepository), typeof(ClienteRepository));
+        
+        // produto
+        services.AddScoped(typeof(IProdutoServices), typeof(ProdutoServices));
+        services.AddScoped(typeof(IProdutoRepository), typeof(ProdutoRepository));
+
+        services.AddScoped<ViaCepServices>();
         return services;
     }
 }
