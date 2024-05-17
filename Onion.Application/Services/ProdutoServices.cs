@@ -1,46 +1,27 @@
+using AutoMapper;
+using Onion.Application.DTOs;
 using Onion.Application.Interfaces;
 using Onion.Domain.Entities;
 using Onion.Domain.Interfaces;
 
 namespace Onion.Application.Services;
 
-public class ProdutoServices : IProdutoServices
+public class ProdutoServices : BaseServices<ProdutoDTO, Produto>, IProdutoServices
 {
-    private readonly IBaseServices<Produto> _baseServices;
     private readonly IProdutoRepository _produtoRepository;
-
-    public ProdutoServices(IBaseServices<Produto> baseServices, IProdutoRepository produtoRepository)
+    private readonly IMapper _mapper;
+    public ProdutoServices(
+        IBaseRepository<Produto> baseRepository, 
+        IMapper mapper, 
+        IProdutoRepository produtoRepository) : base(baseRepository, mapper)
     {
-        _baseServices = baseServices;
         _produtoRepository = produtoRepository;
+        _mapper = mapper;
     }
 
-    public Task<Produto> GetProdutoByName(string name)
+    public async Task<ProdutoDTO> GetProdutoByName(string name)
     {
-        return _produtoRepository.GetProdutoByName(name);
-    }
-    public Task<IEnumerable<Produto>> GetAllAsync()
-    {
-        return _baseServices.GetAllAsync();
-    }
-
-    public Task<Produto> GetById(int id)
-    {
-        return _baseServices.GetById(id);
-    }
-
-    public Task<Produto> CreateAsync(Produto entity)
-    {
-        return _baseServices.CreateAsync(entity);
-    }
-
-    public Task<Produto> UpdateAsync(int id, Produto entity)
-    {
-        return _baseServices.UpdateAsync(id, entity);
-    }
-
-    public Task RemoveAsync(int id)
-    {
-        return _baseServices.RemoveAsync(id);
+        var produto = await _produtoRepository.GetProdutoByName(name);
+        return _mapper.Map<ProdutoDTO>(produto);
     }
 }

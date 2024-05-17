@@ -4,6 +4,7 @@ namespace Onion.Application.DTOs;
 
 public class ClienteDTO
 {
+    public int Id { get; set; }
     [Required(ErrorMessage = "O documento é obrigatório")]
     [MinLength(11, ErrorMessage = "Informe um número de documento válido")]
     [MaxLength(18, ErrorMessage = "Informe um número de documento válido")]

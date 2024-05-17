@@ -1,8 +1,8 @@
-using Onion.Domain.Entities;
+using Onion.Application.DTOs;
 
 namespace Onion.Application.Interfaces;
 
-public interface IClienteServices : IBaseServices<Cliente>
+public interface IClienteServices
 {
-    Task<Cliente> GetClienteByDocument(string document);
+    Task<ClienteDTO> GetClienteByDocument(string document);
 }

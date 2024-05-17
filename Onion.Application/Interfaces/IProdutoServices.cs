@@ -1,8 +1,9 @@
+using Onion.Application.DTOs;
 using Onion.Domain.Entities;
 
 namespace Onion.Application.Interfaces;
 
-public interface IProdutoServices : IBaseServices<Produto>
+public interface IProdutoServices
 {
-    Task<Produto> GetProdutoByName(string name);
+    Task<ProdutoDTO> GetProdutoByName(string name);
 }

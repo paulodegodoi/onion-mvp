@@ -9,9 +9,9 @@ namespace Onion.API.Controllers;
 [ApiController]
 public class ProdutosController : ControllerBase
 {
-    private readonly IBaseServices<Produto> _produtoServices;
+    private readonly IBaseServices<ProdutoDTO, Produto> _produtoServices;
 
-    public ProdutosController(IBaseServices<Produto> produtoServices)
+    public ProdutosController(IBaseServices<ProdutoDTO, Produto> produtoServices)
     {
         _produtoServices = produtoServices;
     }

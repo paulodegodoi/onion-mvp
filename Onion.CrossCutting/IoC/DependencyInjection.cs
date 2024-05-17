@@ -18,7 +18,7 @@ public static class DependencyInjection
         services.AddAutoMapper(typeof(DomainToDTOMappingProfile));
         
         // base
-        services.AddScoped(typeof(IBaseServices<>), typeof(BaseServices<>));
+        services.AddScoped(typeof(IBaseServices<,>), typeof(BaseServices<,>));
         services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
         
         // cliente

@@ -1,6 +1,6 @@
 namespace Onion.Application.Interfaces;
 
-public interface IBaseServices<T>
+public interface IBaseServices<T, TEntity>
 {
     Task<IEnumerable<T>> GetAllAsync();
     Task<T> GetById(int id);

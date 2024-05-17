@@ -12,9 +12,9 @@ namespace Onion.API.Controllers;
 [ApiController]
 public class PedidosController : ControllerBase
 {
-    private readonly IBaseServices<Pedido> _pedidoServices;
+    private readonly IBaseServices<PedidoDTO, Pedido> _pedidoServices;
 
-    public PedidosController(IBaseServices<Pedido> produtoServices)
+    public PedidosController(IBaseServices<PedidoDTO, Pedido> produtoServices)
     {
         _pedidoServices = produtoServices;
     }
@@ -34,7 +34,7 @@ public class PedidosController : ControllerBase
         var pedido = await _pedidoServices.GetById(id);
 
         if (pedido is null)
-            return NotFound($"Produto com id: {id} não encontrado.");
+            return NotFound($"Pedido com id: {id} não encontrado.");
 
         return Ok(pedido);
     }
@@ -46,13 +46,13 @@ public class PedidosController : ControllerBase
     {
         if (file == null || file.Length <= 0)
         {
-            return BadRequest("File not selected or file is empty.");
+            return BadRequest("Faça o upload de uma planilha válida.");
         }
 
         // Check file extension
         if (Path.GetExtension(file.FileName).ToLower() != ".xlsx")
         {
-            return BadRequest("Invalid file format. Please upload a .xlsx file.");
+            return BadRequest("O formato do arquivo precisa ser .xlsx");
         }
 
         List<PedidoDTO> pedidosDTOsList = new List<PedidoDTO>();
@@ -128,7 +128,7 @@ public class PedidosController : ControllerBase
                         pedidosDTOsList.Add(
                             new PedidoDTO()
                             {
-                                PedidoId = numeroPedido,
+                                Id = numeroPedido,
                                 Cliente = cliente,
                                 UF = endereco.UF,
                                 ValorFinal = produto.Valor + (produto.Valor * (decimal)taxa),

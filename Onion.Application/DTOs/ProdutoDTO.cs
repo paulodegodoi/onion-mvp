@@ -5,7 +5,7 @@ namespace Onion.Application.DTOs;
 
 public class ProdutoDTO
 {
-    public int ProdutoId { get; private set; }
+    public int Id { get; private set; }
     
     [Required(ErrorMessage = "O nome do produto é obrigatório.")]
     [MaxLength(80)]

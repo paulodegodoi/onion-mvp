@@ -5,7 +5,7 @@ namespace Onion.Application.DTOs;
 
 public class PedidoDTO
 {
-    public int PedidoId { get; set; }
+    public int Id { get; set; }
     [Required]
     public int Numero { get; set; }
     [Required]

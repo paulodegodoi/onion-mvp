@@ -1,47 +1,27 @@
+using AutoMapper;
+using Onion.Application.DTOs;
 using Onion.Application.Interfaces;
 using Onion.Domain.Interfaces;
 using Onion.Domain.Entities;
 
 namespace Onion.Application.Services;
 
-public class ClienteServices : IClienteServices
+public class ClienteServices : BaseServices<ClienteDTO, Cliente>, IClienteServices
 {
-    private readonly IBaseServices<Cliente> _baseServices;
     private readonly IClienteRepository _clienteRepository;
-
-    public ClienteServices(IBaseServices<Cliente> baseServices, IClienteRepository clienteRepository)
+    private readonly IMapper _mapper;
+    public ClienteServices(
+        IBaseRepository<Cliente> baseRepository, 
+        IMapper mapper, 
+        IClienteRepository clienteRepository) : base(baseRepository, mapper)
     {
-        _baseServices = baseServices;
+        _mapper = mapper;
         _clienteRepository = clienteRepository;
     }
 
-    public Task<Cliente> GetClienteByDocument(string document)
+    public async Task<ClienteDTO> GetClienteByDocument(string document)
     {
-        return _clienteRepository.GetClienteByDocument(document);
-    }
-
-    public Task<IEnumerable<Cliente>> GetAllAsync()
-    {
-        return _baseServices.GetAllAsync();
-    }
-
-    public Task<Cliente> GetById(int id)
-    {
-        return _baseServices.GetById(id);
-    }
-
-    public Task<Cliente> CreateAsync(Cliente entity)
-    {
-        return _baseServices.CreateAsync(entity);
-    }
-
-    public Task<Cliente> UpdateAsync(int id, Cliente entity)
-    {
-        return _baseServices.UpdateAsync(id, entity);
-    }
-
-    public Task RemoveAsync(int id)
-    {
-        return _baseServices.RemoveAsync(id);
+        var cliente = await _clienteRepository.GetClienteByDocument(document);
+        return _mapper.Map<ClienteDTO>(cliente);
     }
 }
