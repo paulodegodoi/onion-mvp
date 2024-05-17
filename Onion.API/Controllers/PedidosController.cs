@@ -87,14 +87,22 @@ public class PedidosController : ControllerBase
                         string? cep = ws.Cells[i, 3].Value.ToString();
                         string? produtoNome = ws.Cells[i, 4].Value.ToString();
                         int numeroPedido = int.Parse(ws.Cells[i, 5].Value.ToString());
-                        string? data = ws.Cells[i, 6].Value.ToString();
+                        string? dataOA = ws.Cells[i, 6].Value.ToString();
+
+                        double dataOADouble;
+
+                        if (string.IsNullOrEmpty(dataOA) || double.TryParse(dataOA, out dataOADouble) == false)
+                        {
+                            return BadRequest(
+                                $"Não foi possível converter a data informada no worksheet: {ws.Name} linha {i}");
+                        }
 
                         if (string.IsNullOrEmpty(documento) &&
                             string.IsNullOrEmpty(razaoSocial) &&
                             string.IsNullOrEmpty(cep) &&
                             string.IsNullOrEmpty(produtoNome) &&
                             numeroPedido == 0 &&
-                            string.IsNullOrEmpty(data))
+                            string.IsNullOrEmpty(dataOA))
                         {
                             continue;
                         }
@@ -109,8 +117,13 @@ public class PedidosController : ControllerBase
                         };
 
                         var endereco = await viaCepServices.SearchUFByCep(cep);
-
+                        var (taxa, diasEntrega) = ReturnTaxAndDaysToArrived(endereco.UF);
+                        
+                        // TODO: Verificar dia útil
+                        var dataCriacao = DateTime.FromOADate(dataOADouble);
+                        
                         var produto = await produtoServices.GetProdutoByName(produtoNome);
+                        
                         
                         pedidosDTOsList.Add(
                             new PedidoDTO()
@@ -118,7 +131,9 @@ public class PedidosController : ControllerBase
                                 PedidoId = numeroPedido,
                                 Cliente = cliente,
                                 UF = endereco.UF,
-                                ValorFinal = CalculateValorFinal(produto.Valor, endereco.UF)
+                                ValorFinal = produto.Valor + (produto.Valor * (decimal)taxa),
+                                DataCriacao = dataCriacao,
+                                DataEntrega = dataCriacao.AddDays(diasEntrega)
                             }
                         );
                     }
@@ -133,29 +148,34 @@ public class PedidosController : ControllerBase
         }
     }
 
-    private decimal CalculateValorFinal(decimal price, string uf)
+    private (double, int) ReturnTaxAndDaysToArrived(string uf)
     {
         double tax = 0;
+        int daysToArrived = 0;
+        
         switch (uf)
         {
             // Norte/Nordeste 30%
             case "AL": case "BA": case "CE": case "MA": case "PB": case "PE": case "PI": case "RN": 
             case "SE": case "AC": case "AM": case "PA": case "RO": case "RR": case "TO":
                 tax = 0.3;
+                daysToArrived = 10;
                 break;
             
             // Centro-Oeste/Sul 20%
             case "DF": case "GO": case "MT": case "MS": case "PR": case "RS": case "SC":
                 tax = 0.2;
+                daysToArrived = 5;
                 break;
             
             // Sudeste 10%
             case "ES": case "MG": case "RJ":
                 tax = 0.1;
+                daysToArrived = 1;
                 break;
-            // São Paulo Gratuito
+            // São Paulo Gratuito e entrega no mesmo dia
         }
 
-        return price + (price * (decimal)tax);
+        return (tax, daysToArrived);
     }
 }
