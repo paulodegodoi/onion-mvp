@@ -1,9 +1,10 @@
 using Onion.Application.Interfaces;
+using Onion.Domain.Entities;
 using Onion.Domain.Interfaces;
 
 namespace Onion.Application.Services;
 
-public class BaseServices<T> : IBaseServices<T>
+public class BaseServices<T> : IBaseServices<T> where T : Entity
 {
     private readonly IBaseRepository<T> _baseRepository;
 
