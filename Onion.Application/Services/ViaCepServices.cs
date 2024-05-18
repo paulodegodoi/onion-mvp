@@ -12,7 +12,7 @@ public class ViaCepServices
     {
         
     }
-    public async Task<Endereco> SearchUFByCep(string cep)
+    public async Task<Endereco> GetEnderecoByCep(string cep)
     {
         if (string.IsNullOrEmpty(cep))
             throw new NullReferenceException("É obrigatório informar o CEP.");
