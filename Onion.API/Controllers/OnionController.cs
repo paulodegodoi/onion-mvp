@@ -81,18 +81,18 @@ public class OnionController : ControllerBase
 
                     for (var i = startRow; i <= endRow; i++)
                     {
-                        string? documento = ws.Cells[i, 1].Value.ToString();
-                        string? razaoSocial = ws.Cells[i, 2].Value.ToString();
-                        string? cep = ws.Cells[i, 3].Value.ToString();
-                        string? produtoNome = ws.Cells[i, 4].Value.ToString();
-                        int numeroPedido = int.Parse(ws.Cells[i, 5].Value.ToString());
-                        string? dataOA = ws.Cells[i, 6].Value.ToString();
+                        string? documento = ws.Cells[i, 1].Value?.ToString();
+                        string? razaoSocial = ws.Cells[i, 2].Value?.ToString();
+                        string? cep = ws.Cells[i, 3].Value?.ToString();
+                        string? produtoNome = ws.Cells[i, 4].Value?.ToString();
+                        string? numeroPedido = ws.Cells[i, 5].Value?.ToString();
+                        string? dataOA = ws.Cells[i, 6].Value?.ToString();
                         
                         if (string.IsNullOrEmpty(documento) &&
                             string.IsNullOrEmpty(razaoSocial) &&
                             string.IsNullOrEmpty(cep) &&
                             string.IsNullOrEmpty(produtoNome) &&
-                            numeroPedido == 0 &&
+                            string.IsNullOrEmpty(numeroPedido) &&
                             string.IsNullOrEmpty(dataOA))
                         {
                             continue;
@@ -135,16 +135,19 @@ public class OnionController : ControllerBase
                         
                         var produto = await produtoServices.GetProdutoByName(produtoNome);
 
-                        var (taxa, dataEntrega) = _shippingServices
+                        var (valorFinal, dataEntrega) = _shippingServices
                             .CalculateTaxAndDaysToArrived(endereco.UF, produto.Valor, dataCriacao);
                         
                         pedidosDTOsList.Add(
                             new PedidoDTO()
                             {
-                                Id = numeroPedido,
+                                Id = pedidosDTOsList.Count + 1,
+                                Numero = int.Parse(numeroPedido),
+                                Cep = cep,
                                 Cliente = cliente,
+                                Produto = produto,
                                 UF = endereco.UF,
-                                ValorFinal = produto.Valor + (produto.Valor * (decimal)taxa),
+                                ValorFinal = valorFinal,
                                 DataCriacao = dataCriacao,
                                 DataEntrega = dataEntrega
                             }

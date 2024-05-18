@@ -11,23 +11,25 @@ public class PedidoDTO
     [Required]
     [StringLength(7, ErrorMessage = "Informe um cep válido.")]
     public string Cep { get; set; } = string.Empty;
-    [Required]
-    public string ClienteDocumento { get; set; } = string.Empty;
+    //[Required]
+    // public string ClienteDocumento { get; set; } = string.Empty;
 
-    private ClienteDTO _cliente;
+    //private ClienteDTO _cliente;
     public ClienteDTO Cliente
     {
-        get => _cliente;
-        set
-        {
-            _cliente = value;
-            if (value != null && string.IsNullOrEmpty(value.Documento) == false)
-            {
-                ClienteDocumento = value.Documento;
-            }
-        }
-    }
-    public Produto Produto { get; set; } = new();
+        get;
+        set;
+        // get => _cliente;
+        // set
+        // {
+        //     _cliente = value;
+        //     if (value != null && string.IsNullOrEmpty(value.Documento) == false)
+        //     {
+        //         ClienteDocumento = value.Documento;
+        //     }
+        // }
+    } = new();
+    public ProdutoDTO Produto { get; set; } = new();
     [Required]
     public DateTime DataCriacao { get; set; }
     [Required]

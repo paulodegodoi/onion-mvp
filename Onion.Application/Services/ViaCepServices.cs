@@ -34,7 +34,7 @@ public class ViaCepServices
         }
         catch (Exception ex)
         {
-            throw new Exception($"Houve um erro ao obter os dados do endereco na api. {ex.Message}");
+            throw new Exception($"Houve um erro ao obter os dados do endereco na api viacep. {ex.Message}");
         }
         
     }
