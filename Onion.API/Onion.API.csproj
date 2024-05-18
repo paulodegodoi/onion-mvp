@@ -15,4 +15,8 @@
       <ProjectReference Include="..\Onion.CrossCutting\Onion.CrossCutting.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Files\" />
+    </ItemGroup>
+
 </Project>
