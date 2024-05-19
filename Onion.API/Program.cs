@@ -9,7 +9,11 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowOnionReactApp",
         builder =>
         {
-            builder.WithOrigins("http://localhost:5173")
+            builder.WithOrigins(
+                    "http://localhost:5173",
+                    "http://192.168.0.67:5173",
+                    "http://192.168.0.66:5173"
+                )
                 .AllowAnyHeader()
                 .AllowAnyMethod();
         });

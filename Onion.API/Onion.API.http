@@ -1,6 +1,5 @@
-@Onion.API_HostAddress = http://localhost:5111
+@Onion.API_HostAddress = http://192.168.0.67:5111
 
-GET {{Onion.API_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
