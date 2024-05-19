@@ -12,12 +12,14 @@ export function Home() {
 	const [isLoadingData, setIsLoadingData] = useState(false)
 	const fileInputRef = useRef<HTMLInputElement | null>(null)
 
+	/** Disparada sempre que o arquivo do input é alterado para salvar em selectedFile */
 	function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
 		if (event.target.files && event.target.files.length > 0) {
 			setSelectedFile(event.target.files[0])
 		}
 	}
 
+	/** Faz o post na api com o arquivo selecionado e retorna os dados salvando-os em ordersData */
 	async function handleSubmit(event: FormEvent<HTMLFormElement>) {
 		event.preventDefault()
 
@@ -31,10 +33,13 @@ export function Home() {
 
 		setIsLoadingData(true)
 		try {
-			const response = await fetch("http://localhost:5111/api/Onion/builddetailsfororder", {
-				method: "POST",
-				body: formData,
-			})
+			const response = await fetch(
+				"http://192.168.0.67:5111/api/Onion/builddetailsfororder",
+				{
+					method: "POST",
+					body: formData,
+				}
+			)
 
 			if (response.ok) {
 				var json = await response.json()
@@ -51,6 +56,7 @@ export function Home() {
 		setIsLoadingData(false)
 	}
 
+	/** Dispara o click no input de arquivo */
 	const handleButtonClick = () => {
 		if (fileInputRef.current) {
 			fileInputRef.current.click()
@@ -59,6 +65,7 @@ export function Home() {
 
 	return (
 		<main className="">
+			{/* <Chart ordersData={ordersData!} chartType={ChartType.Regiao} /> */}
 			{isLoadingData && (
 				<div className="w-screen h-screen bg-gray-500 bg-opacity-20 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
 					<div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
@@ -80,10 +87,10 @@ export function Home() {
 							1 - Faça o download e preencha nossa planilha modelo
 						</p>
 						<p className="italic">2 - Adicione a planilha preenchida</p>
-						<p className="italic">3 - Aguarde os dados serem exibidos</p>
+						<p className="italic">3 - Clique em gerar dados e pronto!</p>
 					</div>
 					<a
-						href="http://localhost:5111/api/Onion/planilha-modelo"
+						href="http://192.168.0.67:5111/api/Onion/planilha-modelo"
 						className="block mb-3 w-44 mx-auto"
 					>
 						<Button

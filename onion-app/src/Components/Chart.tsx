@@ -1,6 +1,6 @@
 import ReactApexCharts from "react-apexcharts"
 import { Pedido } from "../types/pedido"
-import { getApextOptionsByChartType } from "../functions/myFunctions"
+import { getApexOptionsByChartType } from "../functions/myFunctions"
 import { ChartType } from "../enums/chartType"
 
 interface ChartInterface {
@@ -9,17 +9,14 @@ interface ChartInterface {
 }
 
 export function Chart(chartObject: ChartInterface) {
-	let apexSeriesOptions = getApextOptionsByChartType(
-		chartObject.ordersData,
-		chartObject.chartType
-	)
+	let apexSeriesOptions = getApexOptionsByChartType(chartObject.ordersData, chartObject.chartType)
 
 	let chartTitle = ""
 	if (chartObject.chartType == ChartType.Regiao) chartTitle = "Região"
 	else if (chartObject.chartType == ChartType.Produto) chartTitle = "Produto"
 
 	return (
-		<div className="my-4">
+		<div className="my-4 w-screen md:w-4/12">
 			{chartTitle != "" && (
 				<h3 className="text-center">
 					Vendas por <span className="font-bold text-lg">{chartTitle}</span>
@@ -27,11 +24,11 @@ export function Chart(chartObject: ChartInterface) {
 			)}
 
 			<ReactApexCharts
+				width="100%"
 				options={apexSeriesOptions.options}
 				series={apexSeriesOptions.series}
 				// height={380}
-				type="pie"
-				width={500}
+				type="pie" // gráfico pizza
 			/>
 		</div>
 	)

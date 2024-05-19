@@ -3,6 +3,7 @@ import { ApexSeriesOptions } from "../types/apexSeriesOptions"
 import { Pedido } from "../types/pedido"
 import { ProdutoTypes } from "../types/produto"
 
+/** Retorna a região pelo estado (uf) informado */
 export function getRegionByUF(uf: string): Regiao | "Sigla de estado inválida" {
 	const siglaUpperCase = uf.toUpperCase() as SiglaEstado
 	if (siglaUpperCase in estados) {
@@ -11,6 +12,7 @@ export function getRegionByUF(uf: string): Regiao | "Sigla de estado inválida" 
 	return "Sigla de estado inválida"
 }
 
+/** Retorna o index da lista de produtos pelo nome */
 export function getProdutoIndexByName(productName: string): ProdutoTypes | "Produto inválido" {
 	if (productName == "Televisão") productName = "Televisao"
 
@@ -21,7 +23,8 @@ export function getProdutoIndexByName(productName: string): ProdutoTypes | "Prod
 	return "Produto inválido"
 }
 
-export function getApextOptionsByChartType(ordersData: Pedido[], chartType: ChartType) {
+/** Retorna as configurações para utiliza-las no componente Chart (ReactApexCharts) */
+export function getApexOptionsByChartType(ordersData: Pedido[], chartType: ChartType) {
 	// series para configurar ApexSeriesOptions
 	let series: number[] = []
 
@@ -64,6 +67,7 @@ export function getApextOptionsByChartType(ordersData: Pedido[], chartType: Char
 		series = [produtoCount.celular, produtoCount.notebook, produtoCount.televisao]
 	}
 
+	// objeto de configurações do Chart
 	let apexSeriesOptions: ApexSeriesOptions = {
 		series: [],
 		options: {},
@@ -73,21 +77,23 @@ export function getApextOptionsByChartType(ordersData: Pedido[], chartType: Char
 		case ChartType.Regiao:
 			apexSeriesOptions.options = {
 				labels: ["Norte", "Nordeste", "Centro-Oeste", "Sudeste", "Sul"],
-				legend: legend,
 			}
 			break
 		case ChartType.Produto:
 			apexSeriesOptions.options = {
 				labels: ["Celular", "Notebook", "Televisão"],
-				legend: legend,
 			}
 			break
 	}
 
+	apexSeriesOptions.options.responsive = responsive
+	// apexSeriesOptions.options.chart = { width: 600 }
+	apexSeriesOptions.options.legend = legend
 	apexSeriesOptions.series = series
 	return apexSeriesOptions
 }
 
+/** Formatar data string para data formato brasileiro */
 export function formatToBrazilianDate(dateString: string): string {
 	const date = new Date(dateString)
 	const options: Intl.DateTimeFormatOptions = {
@@ -100,6 +106,7 @@ export function formatToBrazilianDate(dateString: string): string {
 	return brazilianDateFormatter.format(date)
 }
 
+/** formatar moeda R$ */
 export function formatToCurrency(number: number): string {
 	const currencyFormatter = new Intl.NumberFormat("pt-BR", {
 		style: "currency",
@@ -110,6 +117,7 @@ export function formatToCurrency(number: number): string {
 	return currencyFormatter.format(number)
 }
 
+// estados e suas regiões
 const estados: Record<SiglaEstado, Regiao> = {
 	AC: "Norte",
 	AL: "Nordeste",
@@ -140,12 +148,26 @@ const estados: Record<SiglaEstado, Regiao> = {
 	TO: "Norte",
 }
 
+// produtos
 const produtos: Record<string, ProdutoTypes> = {
 	celular: "celular",
 	notebook: "notebook",
 	televisao: "televisao",
 }
 
+// configuração de responsividade Chart
+const responsive = [
+	{
+		// breakpoint: 768,
+		// options: {
+		// 	chart: {
+		// 		width: 350, // Full width for mobile devices
+		// 	},
+		// },
+	},
+]
+
+// legenda do Chart
 const legend: ApexLegend = {
 	show: true,
 	showForSingleSeries: false,

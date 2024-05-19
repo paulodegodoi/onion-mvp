@@ -1,5 +1,5 @@
 interface IButton {
-	text: string
+	text: string // text for button
 	type: "submit" | "reset" | "button" | undefined
 	bgColor: string
 	disabled?: boolean
