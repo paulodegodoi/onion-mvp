@@ -1,10 +1,11 @@
 using Onion.Domain.Interfaces;
 
-namespace Onion.Application.Services;
+namespace Onion.Tests.Helpers.TestDoubles.Dummy;
 
-public class ShippingServices : IShippingServices
+public class ShippingServicesDummy : IShippingServices
 {
-    public (decimal finalPrice, DateTime arrivedDate) ReturnProdutoValueWithTaxAndDaysToArrived(string uf, decimal createdPrice, DateTime createdDate)
+    public (decimal finalPrice, DateTime arrivedDate) ReturnProdutoValueWithTaxAndDaysToArrived(string uf, decimal createdPrice,
+        DateTime createdDate)
     {
         if (string.IsNullOrEmpty(uf))
             throw new NullReferenceException("É necessário informar o UF");
@@ -14,20 +15,20 @@ public class ShippingServices : IShippingServices
         
         switch (uf.ToUpper())
         {
-            // Norte/Nordeste 30% e 10 dias úteis
+            // Norte/Nordeste 30%
             case "AL": case "BA": case "CE": case "MA": case "PB": case "PE": case "PI": case "RN": 
             case "SE": case "AC": case "AM": case "PA": case "RO": case "RR": case "TO":
                 tax = 0.3;
                 daysToArrived = 10;
                 break;
             
-            // Centro-Oeste/Sul 20% e 5 dias úteis
+            // Centro-Oeste/Sul 20%
             case "DF": case "GO": case "MT": case "MS": case "PR": case "RS": case "SC":
                 tax = 0.2;
                 daysToArrived = 5;
                 break;
             
-            // Sudeste 10% e entrega em 1 dia útil
+            // Sudeste 10%
             case "ES": case "MG": case "RJ":
                 tax = 0.1;
                 daysToArrived = 1;
@@ -37,8 +38,8 @@ public class ShippingServices : IShippingServices
 
         // Data de início é a data de criação do pedido
         DateTime arrivedDate = createdDate;
-        
-        int i = 0;
+
+        int i = 0; // -1 pois o dia atual não conta
         // loop por dias para entrega
         while (i < daysToArrived)
         {
@@ -53,7 +54,7 @@ public class ShippingServices : IShippingServices
         decimal finalPrice = createdPrice + (createdPrice * (decimal)tax);
         return (finalPrice, arrivedDate);
     }
-
+    
     // Verifica se o dia é sábado, domingo ou feriado
     private bool IsDiaUtil(DateTime date)
     {

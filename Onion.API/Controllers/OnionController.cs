@@ -136,7 +136,7 @@ public class OnionController : ControllerBase
                         var produto = await produtoServices.GetProdutoByName(produtoNome);
 
                         var (valorFinal, dataEntrega) = _shippingServices
-                            .CalculateTaxAndDaysToArrived(endereco.UF, produto.Valor, dataCriacao);
+                            .ReturnProdutoValueWithTaxAndDaysToArrived(endereco.UF, produto.Valor, dataCriacao);
                         
                         pedidosDTOsList.Add(
                             new PedidoDTO()
