@@ -13,7 +13,7 @@ export function Button({ text, type, bgColor, disabled, onClick }: IButton) {
 
 	return (
 		<button
-			className={`${bgClasses} text-white font-bold py-2 px-4 w-44 rounded my-2 disabled:bg-gray-300 disabled:text-gray-600`}
+			className={`${bgClasses} text-white font-bold py-2 px-4 w-44 h-16 rounded my-2 disabled:bg-gray-300 disabled:text-gray-600`}
 			type={type}
 			disabled={disabled != null ? disabled : false}
 			onClick={onClick}
