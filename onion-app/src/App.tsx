@@ -1,9 +1,9 @@
 import { Route, HashRouter as Router, Routes } from "react-router-dom"
 import { Home } from "./Pages/Home"
 import { Layout } from "./Layout"
-import { About } from "./Pages/About"
 import { OrdersDataContextProvider } from "./contexts/OrdersDataContext"
 import { ChartsAndData } from "./Pages/ChartsAndData"
+import { Products } from "./Pages/Products"
 
 function App() {
 	return (
@@ -27,7 +27,15 @@ function App() {
 								</OrdersDataContextProvider>
 							}
 						/>
-						<Route path="/about" element={<About />} />
+						<Route
+							path="/produtos"
+							element={
+								// <OrdersDataContextProvider>
+								<Products /> // sem context em produtos
+								// </OrdersDataContextProvider>
+							}
+						/>
+						{/* <Route path="/about" element={<About />} /> */}
 					</Route>
 				</Routes>
 			</Router>

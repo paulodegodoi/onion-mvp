@@ -34,13 +34,10 @@ export function Home() {
 
 		setIsLoadingData(true)
 		try {
-			const response = await fetch(
-				"http://192.168.0.67:5111/api/Onion/builddetailsfororder",
-				{
-					method: "POST",
-					body: formData,
-				}
-			)
+			const response = await fetch("http://192.168.0.67:5111/api/Onion/carregar-dados", {
+				method: "POST",
+				body: formData,
+			})
 
 			if (response.ok) {
 				var json = await response.json()
@@ -68,8 +65,8 @@ export function Home() {
 			{isLoadingData && (
 				<div className="w-screen h-screen bg-gray-500 bg-opacity-50 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
 					<div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-						<img src={logo} width={100} className="z-50" />
-						<span className="italic text-blue-700 text-xl">Carregando dados...</span>
+						<img src={logo} width={100} className="m-auto z-50" />
+						<span className="font-bold text-blue-900 text-xl">Carregando dados...</span>
 					</div>
 				</div>
 			)}
@@ -110,9 +107,7 @@ export function Home() {
 					<div className="flex flex-col justify-center items-center sm:flex-row gap-2">
 						<Button
 							text={
-								selectedFile == null
-									? "Adicionar arquivo"
-									: `Substituir arquivo ${selectedFile!.name}`
+								selectedFile == null ? "Adicionar arquivo" : `${selectedFile!.name}`
 							}
 							bgColor="blue"
 							type="button"

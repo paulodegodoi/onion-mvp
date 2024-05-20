@@ -5,12 +5,15 @@ export function Layout() {
 	return (
 		<div className="flex flex-col min-h-screen">
 			<nav className="bg-blue-700 text-white w-screen sticky top-0 z-50 h-10 px-3">
-				<div className="flex justify-between items-center h-full mx-auto max-w-4xl">
+				<div className="flex gap-3 items-center h-full mx-auto max-w-4xl">
 					<Link to="/">ChartApp</Link>
-					<Link to="/about" className="flex items-center gap-1">
-						Saiba mais
-						<FaRegQuestionCircle />
-					</Link>
+					<Link to="/produtos">Produtos</Link>
+					{/* <div className="flex gap-3">
+						 <Link to="/about" className="flex items-center gap-1">
+							Saiba mais
+							<FaRegQuestionCircle />
+						</Link> 
+					</div> */}
 				</div>
 			</nav>
 			<main>
