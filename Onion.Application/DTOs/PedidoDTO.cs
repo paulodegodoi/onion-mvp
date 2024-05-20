@@ -6,29 +6,36 @@ namespace Onion.Application.DTOs;
 public class PedidoDTO
 {
     public int Id { get; set; }
+    /// <summary>
+    /// Indica o número de registro do pedido
+    /// </summary>
     [Required]
     public int Numero { get; set; }
     [Required]
-    [StringLength(7, ErrorMessage = "Informe um cep válido.")]
-    public string Cep { get; set; } = string.Empty;
-    //[Required]
-    // public string ClienteDocumento { get; set; } = string.Empty;
+    [StringLength(8, ErrorMessage = "Informe um cep válido.")]
+    public string Cep
+    {
+        get => _cep;
+        set
+        {
+            if (value != null)
+            {
+                var cep = value;
+                cep = new string(cep.Where(char.IsDigit).ToArray());
 
-    //private ClienteDTO _cliente;
+                if (cep.Length != 8)
+                    throw new ArgumentOutOfRangeException($"O cep {cep} não é válido");
+
+                _cep = cep;
+            }
+        }
+    }
+    private string _cep { get; set; }
     public ClienteDTO Cliente
     {
         get;
         set;
-        // get => _cliente;
-        // set
-        // {
-        //     _cliente = value;
-        //     if (value != null && string.IsNullOrEmpty(value.Documento) == false)
-        //     {
-        //         ClienteDocumento = value.Documento;
-        //     }
-        // }
-    } = new();
+    }
     public ProdutoDTO Produto { get; set; } = new();
     [Required]
     public DateTime DataCriacao { get; set; }

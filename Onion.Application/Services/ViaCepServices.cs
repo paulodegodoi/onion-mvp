@@ -7,15 +7,16 @@ public class ViaCepServices
 {
     private readonly HttpClient _httpClient = new HttpClient();
     private readonly string _defaultUrl = "https://viacep.com.br/ws/{0}/json/";
-
-    public ViaCepServices()
-    {
-        
-    }
+    
     public async Task<Endereco> GetEnderecoByCep(string cep)
     {
         if (string.IsNullOrEmpty(cep))
             throw new NullReferenceException("É obrigatório informar o CEP.");
+        
+        cep = new string(cep.Where(char.IsDigit).ToArray());
+
+        if (cep.Length != 8)
+            throw new ArgumentOutOfRangeException($"O cep {cep} não é válido");
 
         var url = string.Format(_defaultUrl, cep);
 

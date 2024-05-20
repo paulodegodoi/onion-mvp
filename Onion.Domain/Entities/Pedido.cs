@@ -2,7 +2,6 @@ namespace Onion.Domain.Entities;
 
 public sealed class Pedido : Entity
 {
-    // public int PedidoId { get; private set; }
     public int Numero { get; private set; }
     public string CEP { get; private set; } = string.Empty;
     public int ClienteId { get; private set; }

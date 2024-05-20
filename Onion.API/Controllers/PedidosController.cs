@@ -1,9 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using OfficeOpenXml;
 using Onion.Application.DTOs;
 using Onion.Application.Interfaces;
-using Onion.Application.Models;
-using Onion.Application.Services;
 using Onion.Domain.Entities;
 
 namespace Onion.API.Controllers;

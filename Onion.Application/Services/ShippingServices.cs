@@ -15,8 +15,8 @@ public class ShippingServices : IShippingServices
         switch (uf.ToUpper())
         {
             // Norte/Nordeste 30% e 10 dias úteis
-            case "AL": case "BA": case "CE": case "MA": case "PB": case "PE": case "PI": case "RN": 
-            case "SE": case "AC": case "AM": case "PA": case "RO": case "RR": case "TO":
+            case "AL": case "AP": case "BA": case "CE": case "MA": case "PB": case "PE": case "PI": 
+            case "RN": case "SE": case "AC": case "AM": case "PA": case "RO": case "RR": case "TO":
                 tax = 0.3;
                 daysToArrived = 10;
                 break;
@@ -32,7 +32,14 @@ public class ShippingServices : IShippingServices
                 tax = 0.1;
                 daysToArrived = 1;
                 break;
+            
             // São Paulo Gratuito e entrega no mesmo dia
+            case "SP":
+                tax = 0;
+                daysToArrived = 0;
+                break;
+            
+            default: throw new ArgumentOutOfRangeException($"UF: {uf} desconhecida.");
         }
 
         // Data de início é a data de criação do pedido
