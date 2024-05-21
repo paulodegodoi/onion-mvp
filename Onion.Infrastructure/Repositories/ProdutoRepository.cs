@@ -40,8 +40,13 @@ public class ProdutoRepository : IProdutoRepository
         return _baseRepository.UpdateAsync(id, entity);
     }
 
-    public Task<Produto> RemoveAsync(Produto entity)
+    public async Task RemoveAsync(int id)
     {
-        return _baseRepository.RemoveAsync(entity);
+        var produto = _baseRepository.GetById(id);
+        if (produto is null)
+            throw new NullReferenceException($"Produto com {id} não encontrado");
+        
+        await _baseRepository.RemoveAsync(id);
     }
+    
 }

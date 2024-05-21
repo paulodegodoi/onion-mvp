@@ -49,6 +49,6 @@ public class BaseServices<T, TEntity> : IBaseServices<T, TEntity> where TEntity 
         if (entity is null)
             throw new NullReferenceException($"Entidade não encontrada. Id {id}");
         
-        await _baseRepository.RemoveAsync(entity);
+        await _baseRepository.RemoveAsync(id);
     }
 }

@@ -39,13 +39,29 @@ public class BaseRepository<T> : IBaseRepository<T> where T : Entity
         }
     }
 
-    public Task<T> UpdateAsync(int id, T entity)
+    public async Task<T> UpdateAsync(int id, T entity)
     {
-        throw new NotImplementedException();
+        if (id != entity.Id)
+            throw new Exception("Id informado é diferente do id da entidade");
+
+        var t = await _context.Set<T>().AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+        if (t is null)
+            throw new NullReferenceException($"Entidade com id {id} não foi encontrada");
+        
+        _context.Entry(entity).State = EntityState.Modified;
+        
+        await _context.SaveChangesAsync();
+
+        return entity;
     }
 
-    public Task<T> RemoveAsync(T entity)
+    public async Task RemoveAsync(int id)
     {
-        throw new NotImplementedException();
+        var t = await _context.Set<T>().FirstOrDefaultAsync(x => x.Id == id);
+        if (t is null)
+            throw new NullReferenceException("entidade não encontrada");
+        
+        _context.Set<T>().Remove(t);
+        await _context.SaveChangesAsync();
     }
 }
