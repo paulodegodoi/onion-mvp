@@ -1,5 +1,5 @@
 export type Produto = {
-	id: number
+	id?: number
 	nome: string
 	valor: number
 }

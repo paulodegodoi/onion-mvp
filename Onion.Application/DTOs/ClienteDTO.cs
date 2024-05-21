@@ -35,13 +35,13 @@ public class ClienteDTO
                 // Verifica se o documento contém apenas números e tem 11 ou 14 caracteres
                 if (!Regex.IsMatch(document, @"^\d{11}$|^\d{14}$"))
                 {
-                    throw new ArgumentOutOfRangeException($"O documento: {document} deve conter 11 ou 14 números.");
+                    throw new InvalidDocumentException($"O documento: {document} deve conter 11 ou 14 números.");
                 }
 
                 _documento = value;
             }
             else
-                throw new NoNullAllowedException("É necessário informar um documento");
+                throw new InvalidDocumentException("É necessário informar um documento");
         }
     }
     private string _documento { get; set; }
@@ -52,4 +52,11 @@ public class ClienteDTO
     [Required(ErrorMessage = "A razão social é obrigatória")]
     [StringLength(150, ErrorMessage = "Reduza o tamanho do nome")]
     public string RazaoSocial { get; set; } = string.Empty;
+    
+    public class InvalidDocumentException : Exception
+    {
+        public InvalidDocumentException(string message) : base(message)
+        {
+        }
+    }
 }

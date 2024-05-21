@@ -25,9 +25,18 @@ public class BaseRepository<T> : IBaseRepository<T> where T : Entity
         return await _context.Set<T>().FirstOrDefaultAsync(e => e.Id == id);
     }
 
-    public Task<T> CreateAsync(T entity)
+    public async Task<T> CreateAsync(T entity)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var t = await _context.Set<T>().AddAsync(entity);
+            await _context.SaveChangesAsync();
+            return t.Entity;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("Falha ao adicionar a entidade");
+        }
     }
 
     public Task<T> UpdateAsync(int id, T entity)

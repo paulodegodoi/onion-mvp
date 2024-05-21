@@ -1,13 +1,16 @@
 import { ChangeEvent, FormEvent, useContext, useRef, useState } from "react"
 import { Button } from "../Components/Button"
-import logo from "../assets/motion-blur.svg"
 import { OrdersDataContext } from "../contexts/OrdersDataContext"
 import { Link, useNavigate } from "react-router-dom"
+import { Alert } from "../Components/Alert"
+import { Loading } from "../Components/Loading"
 
 export function Home() {
 	const [selectedFile, setSelectedFile] = useState<File | null>(null)
 	const [isLoadingData, setIsLoadingData] = useState(false)
 	const fileInputRef = useRef<HTMLInputElement | null>(null)
+	const [message, setMessage] = useState("")
+	const [isHasError, setIsHasError] = useState(false)
 
 	const navigate = useNavigate()
 	// ordersData context
@@ -34,7 +37,7 @@ export function Home() {
 
 		setIsLoadingData(true)
 		try {
-			const response = await fetch("http://192.168.0.67:5111/api/Onion/carregar-dados", {
+			const response = await fetch("http://192.168.0.67:5111/api/onion/carregar-dados", {
 				method: "POST",
 				body: formData,
 			})
@@ -44,7 +47,12 @@ export function Home() {
 				setOrdersData(json)
 				navigate("dados-informativos")
 			} else {
-				alert("Falha ao fazer o upload.")
+				setIsLoadingData(false)
+				setIsHasError(true)
+				// mostra a mensagem de erro
+				const errorText = await response.text()
+				setMessage(errorText)
+				// alert(`Ocorreu um erro: ${errorText}`)
 			}
 		} catch (error) {
 			console.error("Falha ao fazer o upload do arquivo: ", error)
@@ -62,14 +70,8 @@ export function Home() {
 
 	return (
 		<>
-			{isLoadingData && (
-				<div className="w-screen h-screen bg-gray-500 bg-opacity-50 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-					<div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-						<img src={logo} width={100} className="m-auto z-50" />
-						<span className="font-bold text-blue-900 text-xl">Carregando dados...</span>
-					</div>
-				</div>
-			)}
+			{isLoadingData && <Loading />}
+			{isHasError && <Alert setIsShowAlert={setIsHasError} message={message} />}
 			<div className="text-center items-center">
 				<div className="m-3">
 					<p className="text-2xl">Bem-Vindo ao</p>
@@ -102,6 +104,7 @@ export function Home() {
 						id="file-upload"
 						onChange={handleFileChange}
 						ref={fileInputRef}
+						accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
 						className="hidden"
 					/>
 					<div className="flex flex-col justify-center items-center sm:flex-row gap-2">

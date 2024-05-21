@@ -79,7 +79,7 @@ public class OnionController : ControllerBase
 
                     ExcelWorksheet ws = package.Workbook.Worksheets.First();
 
-                    int startRow = 2;
+                    int startRow = 2; // considera a partir da linha 2 pois a 1 é o cabeçalho
                     int endRow = ws.Cells.End.Row;
 
                     for (var i = startRow; i <= endRow; i++)
@@ -143,41 +143,48 @@ public class OnionController : ControllerBase
                         // TODO: no futuro pode obter o cliente com o documento caso não tenha a razão social?
                         // var cliente = await clienteServices.GetClienteByDocument(documentoNumbers);
 
-                        var cliente = new ClienteDTO(documento, razaoSocial);
+                        try
+                        {
+                            var cliente = new ClienteDTO(documento, razaoSocial);
                         
-                        var endereco = await viaCepServices.GetEnderecoByCep(cep);
+                            var endereco = await viaCepServices.GetEnderecoByCep(cep);
                         
-                        var produto = await produtoServices.GetProdutoByName(produtoNome);
+                            var produto = await produtoServices.GetProdutoByName(produtoNome);
+                            
+                            if (produto is null)
+                                throw new NullReferenceException($"Produto com nome {produtoNome} no worksheet {ws.Name} na linha {i} não foi encontrado no sistema");
 
-                        if (produto is null)
-                            throw new NullReferenceException($"Produto com nome {produtoNome} no worksheet {ws.Name} na linha {i} não foi encontrado no sistema");
-
-                        var (valorFinal, dataEntrega) = _shippingServices
-                            .ReturnProdutoValueWithTaxAndDaysToArrived(endereco.UF, produto.Valor, dataCriacao);
+                            var (valorFinal, dataEntrega) = _shippingServices
+                                .ReturnProdutoValueWithTaxAndDaysToArrived(endereco.UF, produto.Valor, dataCriacao);
                         
-                        pedidosDTOsList.Add(
-                            new PedidoDTO()
-                            {
-                                Id = pedidosDTOsList.Count + 1,
-                                Numero = int.Parse(numeroPedido),
-                                Cep = cep,
-                                Cliente = cliente,
-                                Produto = produto,
-                                UF = endereco.UF,
-                                ValorFinal = valorFinal,
-                                DataCriacao = dataCriacao,
-                                DataEntrega = dataEntrega
-                            }
-                        );
+                            pedidosDTOsList.Add(
+                                new PedidoDTO()
+                                {
+                                    Id = pedidosDTOsList.Count + 1,
+                                    Numero = int.Parse(numeroPedido),
+                                    Cep = cep,
+                                    Cliente = cliente,
+                                    Produto = produto,
+                                    UF = endereco.UF,
+                                    ValorFinal = valorFinal,
+                                    DataCriacao = dataCriacao,
+                                    DataEntrega = dataEntrega
+                                }
+                            );
+                        }
+                        catch (Exception ex)
+                        {
+                            return BadRequest("Não foi possível carregar os dados. " + ex.Message);
+                        }
                     }
                 }
             }
 
-            return Ok(pedidosDTOsList);
+            return Ok(pedidosDTOsList.OrderBy(p => p.Cliente.RazaoSocial));
         }
         catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"Houve um erro interno: {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, "Houve um erro interno");
         }
     }
 
