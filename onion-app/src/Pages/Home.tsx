@@ -37,7 +37,7 @@ export function Home() {
 
 		setIsLoadingData(true)
 		try {
-			const response = await fetch("http://192.168.0.67:5111/api/onion/carregar-dados", {
+			const response = await fetch("http://localhost:5111/api/onion/carregar-dados", {
 				method: "POST",
 				body: formData,
 			})
@@ -88,7 +88,7 @@ export function Home() {
 					<p className="text-xl italic">3 - Clique em gerar dados e pronto!</p>
 				</div>
 				<a
-					href="http://192.168.0.67:5111/api/Onion/planilha-modelo"
+					href="http://localhost:5111/api/Onion/planilha-modelo"
 					className="block mb-3 w-44 mx-auto"
 				>
 					<Button

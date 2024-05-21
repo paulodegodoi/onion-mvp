@@ -19,7 +19,7 @@ export function Products() {
 	useEffect(() => {
 		const fetchProducts = async () => {
 			try {
-				const response = await fetch("http://192.168.0.67:5111/api/produtos/", {
+				const response = await fetch("http://localhost:5111/api/produtos/", {
 					method: "GET",
 				})
 				if (response.ok) {
@@ -51,7 +51,7 @@ export function Products() {
 
 		setIsLoadingData(true)
 		try {
-			const response = await fetch("http://192.168.0.67:5111/api/produtos/", {
+			const response = await fetch("http://localhost:5111/api/produtos/", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
