@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Onion.Application.DTOs;
 using Onion.Application.Interfaces;
-using Onion.Domain.Entities;
 
 namespace Onion.API.Controllers;
 
@@ -9,20 +8,18 @@ namespace Onion.API.Controllers;
 [ApiController]
 public class ProdutosController : ControllerBase
 {
-    private readonly IBaseServices<ProdutoDTO, Produto> _baseServices;
     private readonly IProdutoServices _produtoServices;
 
-    public ProdutosController(IBaseServices<ProdutoDTO, Produto> produtoServices, IProdutoServices produtoServices1)
+    public ProdutosController(IProdutoServices produtoServices)
     {
-        _baseServices = produtoServices;
-        _produtoServices = produtoServices1;
+        _produtoServices = produtoServices;
     }
 
     // /produtos
     [HttpGet]
     public async Task<ActionResult<IEnumerable<ProdutoDTO>>> GetAll()
     {
-        var produtos = await _baseServices.GetAllAsync();
+        var produtos = await _produtoServices.GetAllAsync();
         return Ok(produtos.OrderBy(p => p.Valor));
     }
     
@@ -30,7 +27,7 @@ public class ProdutosController : ControllerBase
     [HttpGet("{id:int}")]
     public async Task<ActionResult<ProdutoDTO>> GetProdutoById(int id)
     {
-        var produto = await _baseServices.GetById(id);
+        var produto = await _produtoServices.GetById(id);
 
         if (produto is null)
             return NotFound($"Produto com id: {id} não encontrado.");
@@ -50,7 +47,7 @@ public class ProdutosController : ControllerBase
             if (isProdutoExists)
                 return BadRequest($"Já existe um produto com o nome: {produtoDTO.Nome}");
             
-            var produto = await _baseServices.CreateAsync(produtoDTO);
+            var produto = await _produtoServices.CreateAsync(produtoDTO);
         
             return CreatedAtAction(nameof(GetProdutoById), new { id = produto.Id }, produto);
         }

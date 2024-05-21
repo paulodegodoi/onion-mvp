@@ -11,11 +11,10 @@ public class ProdutoServices : BaseServices<ProdutoDTO, Produto>, IProdutoServic
     private readonly IProdutoRepository _produtoRepository;
     private readonly IMapper _mapper;
     public ProdutoServices(
-        IBaseRepository<Produto> baseRepository, 
-        IMapper mapper, 
-        IProdutoRepository produtoRepository) : base(baseRepository, mapper)
+        IProdutoRepository baseRepository, 
+        IMapper mapper) : base(baseRepository, mapper)
     {
-        _produtoRepository = produtoRepository;
+        _produtoRepository = baseRepository;
         _mapper = mapper;
     }
 

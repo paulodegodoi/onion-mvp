@@ -5,14 +5,12 @@ using Onion.Infrastructure.Context;
 
 namespace Onion.Infrastructure.Repositories;
 
-public class ProdutoRepository : IProdutoRepository
+public class ProdutoRepository : BaseRepository<Produto>, IProdutoRepository
 {
-    private readonly IBaseRepository<Produto> _baseRepository;
     private readonly AppDbContext _context;
 
-    public ProdutoRepository(IBaseRepository<Produto> baseRepository, AppDbContext context)
+    public ProdutoRepository(AppDbContext context) : base(context)
     {
-        _baseRepository = baseRepository;
         _context = context;
     }
 
@@ -20,33 +18,4 @@ public class ProdutoRepository : IProdutoRepository
     {
         return await _context.Produtos.FirstOrDefaultAsync(p => p.Nome == name);
     }
-    public Task<IEnumerable<Produto>> GetAllAsync()
-    {
-        return _baseRepository.GetAllAsync();
-    }
-
-    public Task<Produto> GetById(int id)
-    {
-        return _baseRepository.GetById(id);
-    }
-
-    public Task<Produto> CreateAsync(Produto entity)
-    {
-        return _baseRepository.CreateAsync(entity);
-    }
-
-    public Task<Produto> UpdateAsync(int id, Produto entity)
-    {
-        return _baseRepository.UpdateAsync(id, entity);
-    }
-
-    public async Task RemoveAsync(int id)
-    {
-        var produto = _baseRepository.GetById(id);
-        if (produto is null)
-            throw new NullReferenceException($"Produto com {id} não encontrado");
-        
-        await _baseRepository.RemoveAsync(id);
-    }
-    
 }
