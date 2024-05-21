@@ -34,7 +34,6 @@ export function Products() {
 				// mostra a mensagem de erro
 				setIsShowAlert(true)
 				setMessage((error as Error).message)
-				// alert(`Ocorreu um erro: ${errorText}`)
 			}
 		}
 
@@ -44,10 +43,6 @@ export function Products() {
 	// criar o produto
 	async function handleCreateProduct(event: FormEvent<HTMLFormElement>) {
 		event?.preventDefault()
-		// if (!productName || productName == "") {
-		// 	alert("Informe o nome do produto.")
-		// 	return
-		// }
 
 		const produto: Produto = {
 			nome: productName,
@@ -73,15 +68,13 @@ export function Products() {
 				setMessage("Produto criado com sucesso!")
 			} else {
 				setIsLoadingData(false)
-				// setIsHasError(true)
-				// // mostra a mensagem de erro
-				// const errorText = await response.text()
-				// setMessage(errorText)
-				// alert(`Ocorreu um erro: ${errorText}`)
+				const errorText = await response.text()
+				throw new Error(errorText)
 			}
 		} catch (error) {
-			// console.error("Falha ao adicionar o produto: ", error)
-			// alert("Falha ao adicionar o produto")
+			// mostra a mensagem de erro
+			setIsShowAlert(true)
+			setMessage((error as Error).message)
 		}
 		setIsLoadingData(false)
 	}
