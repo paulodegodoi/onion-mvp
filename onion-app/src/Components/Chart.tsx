@@ -16,7 +16,7 @@ export function Chart(chartObject: ChartInterface) {
 	else if (chartObject.chartType == ChartType.Produto) chartTitle = "Produto"
 
 	return (
-		<div className="my-4 w-screen md:w-4/12">
+		<div className="my-4 w-screen md:max-w-md">
 			{chartTitle != "" && (
 				<h3 className="text-center">
 					Vendas por <span className="font-bold text-lg">{chartTitle}</span>

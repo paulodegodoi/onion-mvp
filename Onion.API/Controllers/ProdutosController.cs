@@ -44,6 +44,7 @@ public class ProdutosController : ControllerBase
     {
         try
         {
+            produtoDTO.Nome = produtoDTO.Nome.ToUpper();
             var isProdutoExists = await _produtoServices.GetProdutoByName(produtoDTO.Nome) != null;
             if (isProdutoExists)
                 return BadRequest($"Já existe um produto com o nome: {produtoDTO.Nome}");

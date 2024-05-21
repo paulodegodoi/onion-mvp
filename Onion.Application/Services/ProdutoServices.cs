@@ -21,7 +21,10 @@ public class ProdutoServices : BaseServices<ProdutoDTO, Produto>, IProdutoServic
 
     public async Task<ProdutoDTO> GetProdutoByName(string name)
     {
-        var produto = await _produtoRepository.GetProdutoByName(name);
+        if (string.IsNullOrEmpty(name))
+            return null;
+        
+        var produto = await _produtoRepository.GetProdutoByName(name.ToUpper());
         return _mapper.Map<ProdutoDTO>(produto);
     }
 }

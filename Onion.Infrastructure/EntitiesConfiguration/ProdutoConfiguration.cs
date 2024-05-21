@@ -13,9 +13,9 @@ public class ProdutoConfiguration : IEntityTypeConfiguration<Produto>
         builder.Property(p => p.Valor).HasPrecision(18, 2).IsRequired();
         
         builder.HasData(
-            new Produto(1, "Celular", 1000),
-            new Produto(2, "Notebook", 3000),
-            new Produto(3, "Televisão", 5000)
+            new Produto(1, "CELULAR", 1000),
+            new Produto(2, "NOTEBOOK", 3000),
+            new Produto(3, "TELEVISÃO", 5000)
         );
     }
 }

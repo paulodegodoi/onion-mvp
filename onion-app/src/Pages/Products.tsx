@@ -68,7 +68,9 @@ export function Products() {
 				setMessage("Produto criado com sucesso!")
 			} else {
 				setIsLoadingData(false)
-				const errorText = await response.text()
+				let errorText = await response.text()
+				if (errorText == "Failed to fetch")
+					errorText = "Falha na comunicação com o servidor"
 				throw new Error(errorText)
 			}
 		} catch (error) {
@@ -177,10 +179,13 @@ export function Products() {
 										key={p.id}
 										className={`${index + 1 < products.length && "border-b-2"}`}
 									>
-										<td>{p.nome.toUpperCase()}</td>
+										<td>{p.nome}</td>
 										<td>{formatToCurrency(p.valor)}</td>
 										<td className="flex justify-center items-center pt-1">
-											<BsFillGearFill className="cursor-pointer" />
+											<BsFillGearFill
+												className=" text-gray-500 cursor-pointer"
+												title="Indisponível no momento"
+											/>
 										</td>
 									</tr>
 								))}

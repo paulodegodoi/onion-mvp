@@ -14,9 +14,10 @@ export function getRegionByUF(uf: string): Regiao | "Sigla de estado inválida" 
 
 /** Retorna o index da lista de produtos pelo nome */
 export function getProdutoIndexByName(productName: string): ProdutoTypes | "Produto inválido" {
-	if (productName == "Televisão") productName = "Televisao"
+	let productString = productName.toLocaleLowerCase()
+	if (productString == "televisão") productString = "televisao"
 
-	const productType = productName.toLocaleLowerCase() as ProdutoTypes
+	const productType = productString as ProdutoTypes
 	if (productType in produtos) {
 		return produtos[productType]
 	}
