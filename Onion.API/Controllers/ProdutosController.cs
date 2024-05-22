@@ -55,6 +55,23 @@ public class ProdutosController : ControllerBase
         {
             return StatusCode(StatusCodes.Status500InternalServerError, "Houve um erro interno");
         }
-        
+    }
+    
+    // /produtos/{id}
+    [HttpPut("{id:int}")]
+    public async Task<ActionResult<ProdutoDTO>> Put(int id, ProdutoDTO produto)
+    {
+        if (id != produto.Id)
+            return BadRequest("O id informado é diferente do produto");
+
+        try
+        {
+            produto.Nome = produto.Nome.ToUpper();
+            return await _produtoServices.UpdateAsync(id, produto);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, "Não foi possível atualizar o produto");
+        }
     }
 }

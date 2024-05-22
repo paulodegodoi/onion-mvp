@@ -39,6 +39,7 @@ public class BaseServices<T, TEntity> : IBaseServices<T, TEntity> where TEntity 
     {
         var entity = _mapper.Map<TEntity>(dtoObject);
         var entityUpdated = await _baseRepository.UpdateAsync(id, entity);
+        
         return _mapper.Map<T>(entityUpdated);
     }
 

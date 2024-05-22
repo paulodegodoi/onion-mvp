@@ -4,6 +4,7 @@ import { Layout } from "./Layout"
 import { OrdersDataContextProvider } from "./contexts/OrdersDataContext"
 import { ChartsAndData } from "./Pages/ChartsAndData"
 import { Products } from "./Pages/Products"
+import { EditProduct } from "./Pages/EditProduct"
 
 function App() {
 	return (
@@ -35,6 +36,8 @@ function App() {
 								// </OrdersDataContextProvider>
 							}
 						/>
+						<Route path="/editar-produto/:id" element={<EditProduct />} />
+
 						{/* <Route path="/about" element={<About />} /> */}
 					</Route>
 				</Routes>
