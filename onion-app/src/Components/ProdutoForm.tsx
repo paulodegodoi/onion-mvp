@@ -21,7 +21,7 @@ export function ProdutoForm({
 }: IProdutoForm) {
 	return (
 		<form
-			className="p-3 flex flex-col items-center justify-center w-screen sm:w-6/12"
+			className="p-3 flex flex-col items-center justify-center w-screen sm:w-8/12 md:w-6/12"
 			onSubmit={onSubmit}
 		>
 			<div className="flex flex-col w-full">
