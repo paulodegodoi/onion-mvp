@@ -6,7 +6,7 @@
 
 # About the project
 
-  This is an MVC project that reads a spreadsheet sent and generates graphs and a list based on the data entered in the spreadsheet
+  This is an MVP project that reads a spreadsheet sent and generates graphs and a list based on the data entered in the spreadsheet
 
   Other features will come in the future, such as registering products, customers and updating information
 
