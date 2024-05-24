@@ -1,8 +1,12 @@
 # Start up project
-   1. Clone the project repository
-   2. Access Onion.API project folder on terminal and run the command **_dotnet run_**
-   3. Access the onion-app folder on terminal and run **_npm run dev_**
-   4. On browser go to _http://localhost:5173_
+   ### 1. Clone the project repository
+   ### 2. API Start: 
+   #####  Access Onion.API project folder on terminal and run the command:
+      dotnet run
+   ### 3. React App Start:
+   ##### Access the onion-app folder on terminal and run the command:
+      npm run dev
+   ### 4. On browser go to _http://localhost:5173_ and test the app.
 
 # About the project
 
