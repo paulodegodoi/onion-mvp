@@ -7,6 +7,7 @@ import { Alert } from "../Components/Alert"
 import { BsFillGearFill } from "react-icons/bs"
 import { ProdutoForm } from "../Components/ProdutoForm"
 import { Link } from "react-router-dom"
+import { RiPencilFill } from "react-icons/ri"
 
 export function Products() {
 	const [products, setProducts] = useState<Produto[]>([])
@@ -134,11 +135,17 @@ export function Products() {
 									>
 										<td>{p.nome}</td>
 										<td>{formatToCurrency(p.valor)}</td>
-										<td className="flex justify-center items-center pt-1">
-											<Link to={`/editar-produto/${p.id}`}>
+										<td className="flex justify-center items-center gap-2 pt-1">
+											<Link to={`/detalhes-produto/${p.id}`}>
 												<BsFillGearFill
 													className=" text-gray-500 cursor-pointer"
 													title="Gerenciar produto"
+												/>
+											</Link>
+											<Link to={`/editar-produto/${p.id}`}>
+												<RiPencilFill
+													className="text-gray-500 cursor-pointer"
+													title="Detalhes"
 												/>
 											</Link>
 										</td>
